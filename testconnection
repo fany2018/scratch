@@ -1,0 +1,13 @@
+from sqlalchemy import create_engine, select
+
+PlyPost51_DB = create_engine(
+    "mssql+pyodbc://plypost51/MA_Sandpit?driver=SQL+Server")
+
+
+con = PlyPost51_DB.connect()
+#print(con.table_names())
+sql='select * from IUK_Nov2018'
+#stmt = select([IUK_Nov2018])
+#stmt = stmt.limit(3)
+results = con.execute(sql).fetchall()
+print(results)
