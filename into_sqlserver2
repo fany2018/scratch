@@ -1,0 +1,33 @@
+#import statements
+
+import pandas as pd
+from sqlalchemy import create_engine, MetaData, Table, insert
+
+#setup db connection
+
+engine = create_engine('mssql+pyodbc://plypost51/MA_Sandpit?driver=SQL+Server')
+metadata = MetaData()
+IUK = Table('IUK_Nov2018',metadata,autoload=True,autoload_with=engine)
+
+#import data from database
+
+connection = engine.connect()
+stmt = select([IUK]).limit(2)
+test = pd.DataFrame(connection.execute(stmt).fetchall())
+test.fillna("",inplace=True)
+input_values = test.to_dict('records')
+print(input_values)
+
+#insert data into database
+
+connection = engine.connect()
+stmt = insert(IUK)
+result_proxy = connection.execute(stmt,input_values)
+
+#check data
+
+connection = engine.connect()
+stmt = select([IUK])
+test = pd.DataFrame(connection.execute(stmt).fetchall())
+test.info()
+test.head(3)
