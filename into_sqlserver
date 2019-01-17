@@ -1,0 +1,23 @@
+#import statements
+
+import pandas as pd
+from sqlalchemy import create_engine, MetaData, Table, insert
+
+#setup db connection
+
+engine = create_engine('mssql+pyodbc://plypost51/MA_Sandpit?driver=SQL+Server')
+metadata = MetaData()
+IUK = Table('IUK_Nov2018',metadata,autoload=True,autoload_with=engine)
+
+#import data from text
+
+df = pd.read_csv(r"C:\Scratch\IUK_Nov2018.txt",nrows=100,parse_dates=['Gasday','PublishTime GMT','PublishTime UKT','PublishTime CET','Hour GMT','Hour UKT','Hour CET'])
+df['Quantity'] = df['Quantity'].astype('float64')
+df.fillna("",inplace=True)
+input_values = df.to_dict('records')
+
+#insert data into database
+
+connection = engine.connect()
+stmt = insert(IUK)
+result_proxy = connection.execute(stmt,input_values)
