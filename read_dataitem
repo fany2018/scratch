@@ -1,0 +1,64 @@
+import fileinput
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+sd = "26-11-2018"
+ed = "27-11-2018"
+#####
+
+tempfile = "c:\\cGas\\python\\a.txt"
+
+f = open("c:\\cGas\\python\\Input\\DataItem_" + sd + "_" + ed +
+         " - Demand system entry volume.txt")
+f1 = []
+for line in f:
+    line = line.rstrip('\n')
+    if line.startswith('"'):
+        line = line[:-1]
+        line = line[1:]
+        f1.append(line + "\n")
+        print(line)
+f1.to_csv(tempfile, header=None)
+""" #####
+f2 = open('c:\\cGas\\python\\b.txt', 'w')
+#with open('c:\\cGas\\python\\Input\\DataItem_26-11-2018_27-11-2018 - Demand system entry volume.txt') as f:
+with open('c:\\cGas\\python\\Input\\DataItem_' + sd + '_' + ed +
+          ' - Supply daily actual.txt') as f:
+    for line in f:
+        line = line.rstrip('\n')
+        if line.startswith('"'):
+            line = line[:-1]
+            line = line[1:]
+            f2.write(line + "\n")
+            print(line)
+
+f2.close
+ """
+
+
+#####
+def tidy(tempfile, efile, ed):
+    asset = []
+    rawdata = []
+    rawdata = pd.read_csv(tempfile, sep='","', header=None, engine='python')
+
+    for dummy in rawdata.iloc[:][2]:
+        asset.append(dummy.split(", ")[1])
+        #print(asset)
+        asset = pd.DataFrame(np.array(asset))
+        supply = pd.concat([rawdata, asset], axis=1)
+        supply.to_csv(efile, header=None)
+
+        #print(supply)
+
+
+tempfile = "c:\\cGas\\python\\b.txt"
+sdir = "c:\\cGas\\python\\Output\\supply\\"
+efile = sdir + "supply_" + ed + ".txt"
+tidy(tempfile, efile, ed)
+tempfile = "c:\\cGas\\python\\a.txt"
+ddir = "c:\\cGas\\python\\Output\\demand\\"
+efile = ddir + "demand_" + ed + ".txt"
+tidy(tempfile, efile, ed)
