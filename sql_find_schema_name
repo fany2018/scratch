@@ -1,0 +1,8 @@
+select default_schema_name
+, type_desc
+, name
+, create_date
+from sys.database_principals
+order by default_schema_name
+, type_desc
+, name
