@@ -1,0 +1,22 @@
+import fileinput
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+#sd = "26-11-2018"
+ed = "27-11-2018"
+
+supply = pd.read_csv(
+    "c:\\cGas\\python\\Output\\supply\\supply_" + ed + ".txt",
+    sep=",",
+    header=None,names=["Index","ApplicableAt","ApplicableFor","DataItem","Value","GeneratedTime","QualityIndicator","Assest"]
+)
+
+demand = pd.read_csv(
+    "c:\\cGas\\python\\Output\\demand\\demand_" + ed + ".txt",
+    sep=",",
+    header=None,names=["Index","ApplicableAt","ApplicableFor","DataItem","Value","GeneratedTime","QualityIndicator","Assest"]
+)
+
+print(demand)
