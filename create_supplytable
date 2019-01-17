@@ -1,0 +1,8 @@
+CREATE TABLE supply ( 
+staff_number INTEGER PRIMARY KEY, 
+ApplicableAt DATE,
+ApplicableFor DATE,
+DataItem VARCHAR(53),
+Value float(53),
+GeneratedTime DATE,
+QualityIndicator CHAR(1))
